@@ -99,18 +99,17 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 
 import { InAppBrowser } from "@ionic-native/in-app-browser";
 
-const platformReady = () => {
-  return new Promise(resolve => {
-    document.addEventListener('deviceready', () => resolve());
+const platformReady = new Promise(resolve => {
+  document.addEventListener('deviceready', () => resolve(console.log('Device ready from promise')));
   });
-}
 
 @Component
 export default class HelloWorld extends Vue {
   @Prop() private msg!: string;
   async mounted() {
     console.log("From Jerry : AppVue mounted!!!");
-    await platformReady();
+    document.addEventListener('deviceready', () => console.log('Device REady from Vanilla'));
+    await platformReady;
     console.log('Plaform ready');
     const browser = InAppBrowser.create("https://ionicframework.com/", "_blank");
     browser.on("loadstop").subscribe(event => {
